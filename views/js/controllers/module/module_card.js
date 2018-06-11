@@ -26,6 +26,8 @@
 var module_card_controller = {};
 
 $(document).ready(function () {
+  $('#subtab-AdminModulesCatalog').remove();
+
   module_card_controller = new AdminModuleCard();
   module_card_controller.init();
 });

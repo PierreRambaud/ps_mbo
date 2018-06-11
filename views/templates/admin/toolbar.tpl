@@ -45,6 +45,7 @@
 <script>
     $(document).ready(function(){
         // Remove duplicate link
+        $('#page-header-desc-configuration-modules-list').remove();
         $('.fancybox-quick-view').fancybox({
             type: 'ajax',
             autoDimensions: false,
