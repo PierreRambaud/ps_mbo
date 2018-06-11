@@ -35,15 +35,15 @@
 {/if}
 
 <div id="psmbo" class="row justify-content-center">
-	
+
 	<div class="col-lg-10 module-catalog-page">
 		{include file="./include/menu_top.tpl"}
 		<div id="modules-list-container-all" class="row modules-list">
-			
+
 			<div class="col-sm-12 text-center">
 				<button class="btn-primary-reverse onclick unbind spinner hide"></button>
 			</div>
-			
+
 			<div
 				v-for="module in modules"
 				v-show="module.attributes.visible"
@@ -75,11 +75,11 @@
 								[[ module.attributes.displayName ]]
 							</span>
 							<span v-else> [[ module.attributes.name ]]</span>
-							
+
 							<span v-if="module.attributes.prestatrust">
 								<img v-bind:src="module.attributes.prestatrust.pico">
 							</span>
-							
+
 						</h3>
 						<div v-if="module.attributes.product_type === 'service'" class="text-ellipsis small-text module-version-author-grid">
 							{l s='Service by'} <b>[[ module.attributes.author ]]</b>
@@ -93,7 +93,7 @@
 							[[ module.attributes.description ]]
 							<span v-if="module.attributes.description.length > 0 && module.attributes.description.length < module.attributes.fullDescription.length">
 								...
-							</span> 
+							</span>
 						</div>
 						<div class="module-read-more-grid">
 								<a v-if="module.attributes.id != '0'" v-bind:href="getHref(module.attributes.name)" class="fancybox-quick-view url" v-bind:data-module-name="module.attributes.name">
@@ -130,13 +130,13 @@
 							  <input type="checkbox" v-bind:data-name="module.attributes.displayName" v-bind:data-tech-name="module.attributes.name" />
 						  </div>
 						{/if}
-						
+
 						{include file="./include/action_menu.tpl"}
 					</div>
 				</div>
 			</div>
-					
-					
+
+
 			<div id="see-results-addons" class="module-item module-item-grid col-md-12 col-lg-6 col-xl-3 hidden">
 				<div class="module-item-wrapper-grid">
 					<div class="module-item-heading-grid" style="height: 350px;">
@@ -148,17 +148,17 @@
 					</div>
 				</div>
 			</div>
-				
+
 		</div>
 	</div>
-			
+
 	<input type="hidden" id="install_url" value="{(isset($install_url)) ? $install_url : ''}" >
 	<input type="hidden" id="module_controller_token" value="{(isset($module_controller_token)) ? $module_controller_token : ''}" >
 	<input type="hidden" id="notification_count_url" value="{(isset($notification_count_url)) ? $notification_count_url : ''}" >
-					
+
 	{include file="./include/modal_import.tpl"}
 	{include file="./include/modal_confirm_prestatrust.tpl"}
-					
+
 </div>
 
 

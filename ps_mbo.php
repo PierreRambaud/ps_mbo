@@ -1,28 +1,28 @@
 <?php
 /**
-* 2007-2018 PrestaShop.
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Open Software License (OSL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/osl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-* @author PrestaShop SA <contact@prestashop.com>
-* @copyright 2007-2018 PrestaShop SA
-* @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
-* International Registered Trademark & Property of PrestaShop SA
-**/
+ * 2007-2018 PrestaShop.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+ * versions in the future. If you wish to customize PrestaShop for your
+ * needs please refer to http://www.prestashop.com for more information.
+ *
+ * @author PrestaShop SA <contact@prestashop.com>
+ * @copyright 2007-2018 PrestaShop SA
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * International Registered Trademark & Property of PrestaShop SA
+ **/
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -80,18 +80,18 @@ class ps_mbo extends Module
     public function install()
     {
         if (parent::install()
-                && $this->registerHook('backOfficeHeader')
-                && $this->registerHook('displayDashboardToolbarTopMenu')
-                && $this->registerHook('displayAdminNavBarBeforeEnd')
-                && $this->registerHook('displayDashboardToolbarIcons')
-                && $this->registerHook('displayAdminEndContent')
-            ) {
+            && $this->registerHook('backOfficeHeader')
+            && $this->registerHook('displayDashboardToolbarTopMenu')
+            && $this->registerHook('displayAdminNavBarBeforeEnd')
+            && $this->registerHook('displayDashboardToolbarIcons')
+            && $this->registerHook('displayAdminEndContent')
+        ) {
             return true;
-        } else { // if something wrong return false
-            $this->_errors[] = $this->l('There was an error during the installation.');
-
-            return false;
         }
+
+        $this->_errors[] = $this->l('There was an error during the installation.');
+
+        return false;
     }
 
     public function fetchModulesByController($ajax = false)
@@ -125,9 +125,8 @@ class ps_mbo extends Module
 
             if (true === $ajax) {
                 return $data;
-            } else {
-                return $this->context->smarty->fetch($this->template_dir.'/admin-end-content.tpl');
             }
+            return $this->context->smarty->fetch($this->template_dir.'/admin-end-content.tpl');
         }
 
         return false;
@@ -148,7 +147,7 @@ class ps_mbo extends Module
         $controller = Tools::getValue('controller');
         if ('AdminThemes' == $controller) {
             $this->context->smarty->assign(array(
-                        'admin_module_ajax_url_psmbo' => $this->front_controller[0],
+                'admin_module_ajax_url_psmbo' => $this->front_controller[0],
             ));
 
             return $this->context->smarty->fetch($this->template_dir.'/admin-end-content-theme.tpl');
@@ -202,12 +201,11 @@ class ps_mbo extends Module
                 'email' => $addonsEmail['username_addons'],
                 'logout_url' => $container->get('router')->generate('admin_addons_logout', [], UrlGeneratorInterface::ABSOLUTE_URL),
             );
-        } else {
-            return array(
-                'connected' => false,
-                'login_url' => $container->get('router')->generate('admin_addons_login', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            );
         }
+        return array(
+            'connected' => false,
+            'login_url' => $container->get('router')->generate('admin_addons_login', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        );
     }
 
     private function installTab()
@@ -219,7 +217,6 @@ class ps_mbo extends Module
         foreach (Language::getLanguages(true) as $lang) {
             $tab->name[$lang['id_lang']] = $this->displayName;
         }
-        unset($lang);
         $tab->id_parent = -1;
         $tab->module = $this->name;
         $tab->add();
@@ -231,7 +228,6 @@ class ps_mbo extends Module
         foreach (Language::getLanguages(true) as $lang) {
             $tab->name[$lang['id_lang']] = $this->displayName;
         }
-        unset($lang);
         $tab->id_parent = -1;
         $tab->module = $this->name;
         $tab->add();
@@ -249,13 +245,11 @@ class ps_mbo extends Module
         // unregister hook
         if (parent::uninstall()) {
             return true;
-        } else {
-            $this->_errors[] = $this->l('There was an error during the desinstallation.');
-
-            return false;
         }
 
-        return parent::uninstall();
+        $this->_errors[] = $this->l('There was an error during the desinstallation.');
+
+        return false;
     }
 
     /**
@@ -375,11 +369,11 @@ class ps_mbo extends Module
         $module->logo = '../../img/questionmark.png';
 
         if (@filemtime(_PS_ROOT_DIR_.DIRECTORY_SEPARATOR.basename(_PS_MODULE_DIR_).DIRECTORY_SEPARATOR.$module->name
-            .DIRECTORY_SEPARATOR.'logo.gif')) {
+                       .DIRECTORY_SEPARATOR.'logo.gif')) {
             $module->logo = 'logo.gif';
         }
         if (@filemtime(_PS_ROOT_DIR_.DIRECTORY_SEPARATOR.basename(_PS_MODULE_DIR_).DIRECTORY_SEPARATOR.$module->name
-            .DIRECTORY_SEPARATOR.'logo.png')) {
+                       .DIRECTORY_SEPARATOR.'logo.png')) {
             $module->logo = 'logo.png';
         }
 
@@ -397,8 +391,8 @@ class ps_mbo extends Module
         }
 
         $module->options['uninstall_onclick'] = ((!$module->onclick_option) ?
-            ((empty($module->confirmUninstall)) ? 'return confirm(\''.$this->l('Do you really want to uninstall this module?').'\');' : 'return confirm(\''.addslashes($module->confirmUninstall).'\');') :
-            $obj->onclickOption('uninstall', $module->options['uninstall_url']));
+                                                 ((empty($module->confirmUninstall)) ? 'return confirm(\''.$this->l('Do you really want to uninstall this module?').'\');' : 'return confirm(\''.addslashes($module->confirmUninstall).'\');') :
+                                                 $obj->onclickOption('uninstall', $module->options['uninstall_url']));
 
         if ((Tools::getValue('module_name') == $module->name || in_array($module->name, explode('|', Tools::getValue('modules_list')))) && (int) Tools::getValue('conf') > 0) {
             $module->message = $this->_conf[(int) Tools::getValue('conf')];
@@ -526,7 +520,7 @@ class ps_mbo extends Module
 
         $install = array(
             'href' => $link_admin_modules.'&install='.urlencode($module->name).'&tab_module='.$module->tab.'&module_name='.$module->name.'&anchor='.ucfirst($module->name)
-                .(!is_null($back) ? '&back='.urlencode($back) : '').($install_source_tracking ? '&source='.$install_source_tracking : ''),
+            .(!is_null($back) ? '&back='.urlencode($back) : '').($install_source_tracking ? '&source='.$install_source_tracking : ''),
             'onclick' => '',
             'title' => $this->translationsTab['Install'],
             'text' => $this->translationsTab['Install'],

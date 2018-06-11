@@ -24,106 +24,105 @@
  */
 
 $(document).ready(function() {
-	
-	window.vApp = new Vue({
-        el: '#psmbo',
-        delimiters: ['[[', ']]'],
-        data: {
-			modules: [],
-			categories: [],
-			admin_module_ajax_url_psmbo: ''
-        },
-		methods: {
-			getHref: function(module_name) {
-				return window.vApp.admin_module_ajax_url_psmbo + '&action=GetModuleQuickView&module_name=' + module_name + '&ajax=1';
-			},
-			getAvgRateClass: function(avg_rate) {
-				return 'module-stars module-star-ranking-grid-' + Math.round(avg_rate) + ' small';
-			},
-			visibleModules: function() {
-				var visibleModules = 0;
-				
-				if (typeof window.vApp !== 'undefined' && typeof window.vApp.modules !== 'undefined') {
-					$.each(window.vApp.modules, function(index, value) {
-						if (value.attributes.visible === true) {
-							visibleModules++;
-						}
-					});
-				}
-				
-				return visibleModules;
-			}
-		}
+  window.vApp = new Vue({
+    el: '#psmbo',
+    delimiters: ['[[', ']]'],
+    data: {
+      modules: [],
+      categories: [],
+      admin_module_ajax_url_psmbo: ''
+    },
+    methods: {
+      getHref: function(module_name) {
+        return window.vApp.admin_module_ajax_url_psmbo + '&action=GetModuleQuickView&module_name=' + module_name + '&ajax=1';
+      },
+      getAvgRateClass: function(avg_rate) {
+        return 'module-stars module-star-ranking-grid-' + Math.round(avg_rate) + ' small';
+      },
+      visibleModules: function() {
+        var visibleModules = 0;
+
+        if (typeof window.vApp !== 'undefined' && typeof window.vApp.modules !== 'undefined') {
+          $.each(window.vApp.modules, function(index, value) {
+            if (value.attributes.visible === true) {
+              visibleModules++;
+            }
+          });
+        }
+
+        return visibleModules;
+      }
+    }
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: admin_module_ajax_url_psmbo,
+    data: {
+      ajax : true,
+      action : 'GetModulesList',
+    },
+    beforeSend: function() {
+      $('#psmbo .btn-primary-reverse.spinner').css({
+        'background-color': 'inherit'
+      });
+      $('#psmbo .btn-primary-reverse.spinner').removeClass('hide');
+
+    },
+    success : function(data) {
+      var parsedData = JSON.parse(data);
+      window.vApp.modules = parsedData.modules;
+      window.vApp.categories = parsedData.categories;
+
+      if (typeof filterCategoryTab !== 'undefined') {
+        $.each(window.vApp.modules, function (key, value) {
+          if (value.attributes.tab == filterCategoryTab) {
+            value.attributes.visible = true;
+          } else {
+            value.attributes.visible = false;
+          }
+        });
+      }
+      $('[data-toggle="popover"]').popover();
+      $('#psmbo .btn-primary-reverse.spinner').addClass('hide');
+    },
+  });
+
+  window.vApp.admin_module_ajax_url_psmbo = admin_module_ajax_url_psmbo;
+
+  $('.fancybox-quick-view').fancybox({
+    type: 'ajax',
+    autoDimensions: false,
+    autoSize: false,
+    width: 600,
+    height: 'auto',
+    helpers: {
+      overlay: {
+        locked: false
+      }
+    }
+  });
+
+  $(document).on('click', '.module-read-more-grid-btn', function() {
+    var name = $(this).attr('data-module-name');
+    return true;
+  });
+
+  var urlToCall = $('#notification_count_url').val();
+  if (urlToCall !== '') {
+    var destinationTab = $("#subtab-AdminModulesNotifications");
+    if (destinationTab.length === 0) {
+      return;
+    }
+
+    $.getJSON(urlToCall, function(badge) {
+      destinationTab.append('<span class="notification-container">\
+                <span class="notification-counter">'+badge.count+'</span>\
+              </span>\
+                ');
+    }).fail(function() {
+      console.error('Could not retrieve module notifications count.');
     });
-	
-	$.ajax({
-		type: 'POST',
-		url: admin_module_ajax_url_psmbo,
-		data: {
-			ajax : true,
-			action : 'GetModulesList',
-		},
-		beforeSend: function() {
-			$('#psmbo .btn-primary-reverse.spinner').css({
-				'background-color': 'inherit'
-			});
-			$('#psmbo .btn-primary-reverse.spinner').removeClass('hide');
-			
-		},
-		success : function(data) {
-			var parsedData = JSON.parse(data);
-			window.vApp.modules = parsedData.modules;
-			window.vApp.categories = parsedData.categories;
-			
-			if (typeof filterCategoryTab !== 'undefined') {
-				$.each(window.vApp.modules, function (key, value) {
-					if (value.attributes.tab == filterCategoryTab) {
-						value.attributes.visible = true;
-					} else {
-						value.attributes.visible = false;
-					}
-				}); 
-			}
-			$('[data-toggle="popover"]').popover();
-			$('#psmbo .btn-primary-reverse.spinner').addClass('hide');
-		},
-	});
-	
-	window.vApp.admin_module_ajax_url_psmbo = admin_module_ajax_url_psmbo;
-	
-	$('.fancybox-quick-view').fancybox({
-		type: 'ajax',
-		autoDimensions: false,
-		autoSize: false,
-		width: 600,
-		height: 'auto',
-		helpers: {
-			overlay: {
-				locked: false
-			}
-		}
-	});
-	
-	$(document).on('click', '.module-read-more-grid-btn', function() {
-		var name = $(this).attr('data-module-name');
-		return true;
-	});
-	
-	var urlToCall = $('#notification_count_url').val();
-	if (urlToCall !== '') {
-		var destinationTab = $("#subtab-AdminModulesNotifications");
-		if (destinationTab.length === 0) {
-			return;
-		}
-		
-		$.getJSON(urlToCall, function(badge) {
-	        destinationTab.append('<span class="notification-container">\
-	            <span class="notification-counter">'+badge.count+'</span>\
-	          </span>\
-	        ');
-		}).fail(function() {
-			console.error('Could not retrieve module notifications count.');
-		});
-	}
-	
+  }
+
 });

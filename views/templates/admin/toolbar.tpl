@@ -23,77 +23,72 @@
  * International Registered Trademark & Property of PrestaShop SA
  *}
 <li>
-	<a id="page-header-desc-carrier-new_carrier" class="toolbar_btn  pointer" href="" title="{l s='Recommended Modules and Services'}">
-		<i class="process-icon-modules-list"></i>
-		<div>{l s='Recommended Modules and Services'}</div>
-	</a>
+    <a id="page-header-desc-carrier-new_carrier" class="toolbar_btn  pointer" href="" title="{l s='Recommended Modules and Services'}">
+        <i class="process-icon-modules-list"></i>
+        <div>{l s='Recommended Modules and Services'}</div>
+    </a>
 </li>
 {*<div class="modal fade" id="modules_list_container">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">TODO IN MY MODULE
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3 class="modal-title">{l s='Recommended Modules and Services'}</h3>
-			</div>
-			<div class="modal-body">
-				<div id="modules_list_container_tab_modal" style="display:none;"></div>
-				<div id="modules_list_loader"><i class="icon-refresh icon-spin"></i></div>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">TODO IN MY MODULE
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">{l s='Recommended Modules and Services'}</h3>
+            </div>
+            <div class="modal-body">
+                <div id="modules_list_container_tab_modal" style="display:none;"></div>
+                <div id="modules_list_loader"><i class="icon-refresh icon-spin"></i></div>
+            </div>
+        </div>
+    </div>
 </div>*}
 <script>
-	$(document).ready(function(){
-		$('.fancybox-quick-view').fancybox({
-			type: 'ajax',
-			autoDimensions: false,
-			autoSize: false,
-			width: 600,
-			height: 'auto',
-			helpers: {
-				overlay: {
-					locked: false
-				}
-			}
-		});
-	});
-	
-	$('.process-icon-modules-list').parent('a').unbind().bind('click', function (event) {
-		event.preventDefault();
-		$('#modules_list_container').modal('show');
-		openModulesList();
-	});
-</script>
+    $(document).ready(function(){
+        // Remove duplicate link
+        $('.fancybox-quick-view').fancybox({
+            type: 'ajax',
+            autoDimensions: false,
+            autoSize: false,
+            width: 600,
+            height: 'auto',
+            helpers: {
+                overlay: {
+                    locked: false
+                }
+            }
+        });
+    });
 
-<script>
-	
-	var admin_module_ajax_url_psmbo = '{$admin_module_ajax_url_psmbo}';
-	var controller = '{$controller}';
-	
-function openModulesList() {
-	$.ajax({
-		type: 'POST',
-		url: admin_module_ajax_url_psmbo,
-{*		url: admin_module_ajax_url_psmbo + '&token=' + '{getAdminToken tab="AdminPsMboModule"}',*}
-		data: {
-			ajax : true,
-			action : 'GetTabModulesList',
-			controllerName: controller
-		},
-		success : function(data) {
-			$('#modules_list_container_tab_modal').html(data).slideDown();
-			$('#modules_list_loader').hide();
-		},
-	});
-}
-	
-	
+    $('.process-icon-modules-list').parent('a').unbind().bind('click', function (event) {
+        event.preventDefault();
+        $('#modules_list_container').modal('show');
+        openModulesList();
+    });
+
+    var admin_module_ajax_url_psmbo = '{$admin_module_ajax_url_psmbo}';
+    var controller = '{$controller}';
+
+    function openModulesList() {
+        $.ajax({
+            type: 'POST',
+            url: admin_module_ajax_url_psmbo,
+            data: {
+                ajax : true,
+                action : 'GetTabModulesList',
+                controllerName: controller
+            },
+            success : function(data) {
+                $('#modules_list_container_tab_modal').html(data).slideDown();
+                $('#modules_list_loader').hide();
+            },
+        });
+    }
 </script>
 
 {*<style>
-	.modal-backdrop.in {
-		opacity: .5;
-		z-index: 400;
-	}
-	
+    .modal-backdrop.in {
+        opacity: .5;
+        z-index: 400;
+    }
+
 </style>*}
