@@ -1,6 +1,6 @@
 <?php
 /**
-* 2007-2018 PrestaShop
+* 2007-2018 PrestaShop.
 *
 * NOTICE OF LICENSE
 *
@@ -23,40 +23,37 @@
 * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 * International Registered Trademark & Property of PrestaShop SA
 **/
-
-require_once(dirname(__FILE__) . '../../../classes/Addons.php');
+require_once dirname(__FILE__).'../../../classes/Addons.php';
 
 class AdminPsMboThemeController extends ModuleAdminController
 {
-	
-	public function __construct() {
-		$this->controller_quick_name = 'theme';
-		$this->bootstrap = true;
-		parent::__construct();
+    public function __construct()
+    {
+        $this->controller_quick_name = 'theme';
+        $this->bootstrap = true;
+        parent::__construct();
     }
 
-    public function initContent() {
-		
+    public function initContent()
+    {
         $parent_domain = Tools::getHttpHost(true).substr($_SERVER['REQUEST_URI'], 0, -1 * strlen(basename($_SERVER['REQUEST_URI'])));
         $iso_lang = $this->context->language->iso_code;
         $iso_currency = $this->context->currency->iso_code;
         $iso_country = $this->context->country->iso_code;
         $activity = Configuration::get('PS_SHOP_ACTIVITY');
-        $addons_url = 'https://addons.prestashop.com/iframe/search-1.7.php?psVersion='._PS_VERSION_.'&isoLang='.$iso_lang.'&isoCurrency='.$iso_currency.'&isoCountry='.$iso_country.'&activity='.(int)$activity.'&parentUrl='.$parent_domain.'&onlyThemes=1';
+        $addons_url = 'https://addons.prestashop.com/iframe/search-1.7.php?psVersion='._PS_VERSION_.'&isoLang='.$iso_lang.'&isoCurrency='.$iso_currency.'&isoCountry='.$iso_country.'&activity='.(int) $activity.'&parentUrl='.$parent_domain.'&onlyThemes=1';
         $addons_content = Tools::file_get_contents($addons_url);
 
         $this->context->smarty->assign(array(
             'iso_lang' => $iso_lang,
             'iso_currency' => $iso_currency,
             'iso_country' => $iso_country,
-            'display_addons_content' => $addons_content !== false,
+            'display_addons_content' => false !== $addons_content,
             'addons_content' => $addons_content,
             'parent_domain' => $parent_domain,
         ));
 
 //        parent::initContent();
-		$this->setTemplate($this->module->template_dir . 'theme.tpl');
+        $this->setTemplate($this->module->template_dir.'theme.tpl');
     }
-	
-	
 }

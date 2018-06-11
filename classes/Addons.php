@@ -1,6 +1,6 @@
 <?php
 /**
-* 2007-2018 PrestaShop
+* 2007-2018 PrestaShop.
 *
 * NOTICE OF LICENSE
 *
@@ -23,11 +23,12 @@
 * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 * International Registered Trademark & Property of PrestaShop SA
 **/
+class Addons
+{
+    protected static $is_addons_up = true;
 
-class Addons {
-	
-	protected static $is_addons_up = true;
-	public static function addonsRequest($request, $params = array()) {
+    public static function addonsRequest($request, $params = array())
+    {
         if (!self::$is_addons_up) {
             return false;
         }
@@ -102,7 +103,7 @@ class Addons {
                 }
                 break;
             case 'hosted_module':
-                $post_data .= '&method=module&id_module='.urlencode((int)$params['id_module']).'&username='.urlencode($params['hosted_email'])
+                $post_data .= '&method=module&id_module='.urlencode((int) $params['id_module']).'&username='.urlencode($params['hosted_email'])
                     .'&password='.urlencode($params['password_addons'])
                     .'&shop_url='.urlencode(isset($params['shop_url']) ? $params['shop_url'] : Tools::getShopDomain())
                     .'&mail='.urlencode(isset($params['email']) ? $params['email'] : Configuration::get('PS_SHOP_EMAIL'));
@@ -119,32 +120,30 @@ class Addons {
 
         $context = stream_context_create(array(
             'http' => array(
-                'method'  => 'POST',
+                'method' => 'POST',
                 'content' => $post_data,
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
                 'timeout' => 5,
-            )
+            ),
         ));
-		
+
         foreach ($protocols as $protocol) {
             if ($content = Tools::file_get_contents($protocol.'://'.$end_point, false, $context)) {
                 return $content;
             }
         }
 
-		
-// $back_link = self::$currentIndex.'&token='.$this->token.'&tab_module='.$module->tab.'&module_name='.$module->name;
-// $hook_link = 'index.php?tab=AdminModulesPositions&token='.Tools::getAdminTokenLite('AdminModulesPositions').'&show_modules='.(int)$module->id;
-// $trad_link = 'index.php?tab=AdminTranslations&token='.Tools::getAdminTokenLite('AdminTranslations').'&type=modules&lang=';
-// $rtl_link = 'index.php?tab=AdminModules&token='.Tools::getAdminTokenLite('AdminModules').'&configure='.$module->name.'&generate_rtl=1';
-// $disable_link = $this->context->link->getAdminLink('AdminModules').'&module_name='.$module->name.'&enable=0&tab_module='.$module->tab;
-// $uninstall_link = $this->context->link->getAdminLink('AdminModules').'&module_name='.$module->name.'&uninstall='.$module->name.'&tab_module='.$module->tab;
-// $reset_link = $this->context->link->getAdminLink('AdminModules').'&module_name='.$module->name.'&reset&tab_module='.$module->tab;
-// $update_link = $this->context->link->getAdminLink('AdminModules').'&checkAndUpdate=1&module_name='.$module->name;
-		
+        // $back_link = self::$currentIndex.'&token='.$this->token.'&tab_module='.$module->tab.'&module_name='.$module->name;
+        // $hook_link = 'index.php?tab=AdminModulesPositions&token='.Tools::getAdminTokenLite('AdminModulesPositions').'&show_modules='.(int)$module->id;
+        // $trad_link = 'index.php?tab=AdminTranslations&token='.Tools::getAdminTokenLite('AdminTranslations').'&type=modules&lang=';
+        // $rtl_link = 'index.php?tab=AdminModules&token='.Tools::getAdminTokenLite('AdminModules').'&configure='.$module->name.'&generate_rtl=1';
+        // $disable_link = $this->context->link->getAdminLink('AdminModules').'&module_name='.$module->name.'&enable=0&tab_module='.$module->tab;
+        // $uninstall_link = $this->context->link->getAdminLink('AdminModules').'&module_name='.$module->name.'&uninstall='.$module->name.'&tab_module='.$module->tab;
+        // $reset_link = $this->context->link->getAdminLink('AdminModules').'&module_name='.$module->name.'&reset&tab_module='.$module->tab;
+        // $update_link = $this->context->link->getAdminLink('AdminModules').'&checkAndUpdate=1&module_name='.$module->name;
+
         self::$is_addons_up = false;
+
         return false;
     }
-	
-	
 }
